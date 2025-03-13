@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro para Curso</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #9c27b0, #673ab7);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* Partículas de fondo */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      pointer-events: none;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    
+    .card {
+      background-color: #121212;
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      position: relative;
+      z-index: 10;
+      overflow: hidden;
+      animation: cardAppear 0.8s ease-out;
+    }
+    
+    @keyframes cardAppear {
+      0% {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent 0%,
+        rgba(156, 39, 176, 0.1) 40%,
+        rgba(156, 39, 176, 0.2) 50%,
+        transparent 60%
+      );
+      transform: rotate(45deg);
+      animation: shine 3s infinite linear;
+      z-index: -1;
+    }
+    
+    @keyframes shine {
+      0% {
+        transform: translateX(-50%) rotate(45deg);
+      }
+      100% {
+        transform: translateX(150%) rotate(45deg);
+      }
+    }
+    
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+      position: relative;
+      padding-bottom: 10px;
+      color: #bb86fc;
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #bb86fc, transparent);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bb86fc;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 12px 12px 45px;
+      border: none;
+      border-radius: 6px;
+      background-color: #2a2a2a;
+      color: white;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      border-bottom: 2px solid transparent;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      background-color: #333333;
+      border-bottom: 2px solid #bb86fc;
+      box-shadow: 0 4px 8px rgba(187, 134, 252, 0.2);
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #bb86fc;
+      font-weight: 500;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(45deg, #9c27b0, #673ab7);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: all 0.5s ease;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover {
+      box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .option-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .option-item {
+      flex: 1;
+      margin: 0 5px;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+      background-color: #2a2a2a;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .option-item.active, .option-item:hover {
+      background-color: #9c27b0;
+    }
+    
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .checkmark {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: block;
+      stroke-width: 2;
+      stroke: #bb86fc;
+      stroke-miterlimit: 10;
+      margin: 10% auto;
+      box-shadow: 0 0 20px #bb86fc;
+      animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+    }
+    
+    .checkmark__circle {
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      stroke-width: 2;
+      stroke-miterlimit: 10;
+      stroke: #bb86fc;
+      fill: none;
+      animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+    
+    .checkmark__check {
+      transform-origin: 50% 50%;
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+    
+    @keyframes stroke {
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+    
+    @keyframes scale {
+      0%, 100% {
+        transform: none;
+      }
+      50% {
+        transform: scale3d(1.1, 1.1, 1);
+      }
+    }
+    
+    @keyframes fill {
+      100% {
+        box-shadow: inset 0 0 0 80px rgba(187, 134, 252, 0.1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+  
+  <div class="card" id="form-card">
+    <h1>Registro para Curso</h1>
+    
+    <form id="registration-form">
+      <div class="form-group">
+        <label for="name">Nombre Completo</label>
+        <i class="fas fa-user"></i>
+        <input type="text" id="name" class="form-control" placeholder="Ingresa tu nombre completo" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" class="form-control" placeholder="Ingresa tu correo electrónico" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="phone">Teléfono</label>
+        <i class="fas fa-phone"></i>
+        <input type="tel" id="phone" class="form-control" placeholder="Ingresa tu número telefónico" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Nivel de Experiencia</label>
+        <div class="option-group">
+          <div class="option-item" data-value="principiante">Principiante</div>
+          <div class="option-item" data-value="intermedio">Intermedio</div>
+          <div class="option-item" data-value="avanzado">Avanzado</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="course">Selecciona el Curso</label>
+        <i class="fas fa-book"></i>
+        <select id="course" class="form-control" required>
+          <option value="" disabled selected>Elige un curso</option>
+          <option value="web-development">Desarrollo Web</option>
+          <option value="mobile-apps">Aplicaciones Móviles</option>
+          <option value="data-science">Ciencia de Datos</option>
+          <option value="ui-ux">Diseño UI/UX</option>
+          <option value="blockchain">Blockchain</option>
+        </select>
+      </div>
+      
+      <button type="submit" class="btn">Registrarme Ahora</button>
+    </form>
+  </div>
+  
+  <div class="card success-message" id="success-card">
+    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+      <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+      <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+    </svg>
+    <h2>¡Registro Exitoso!</h2>
+    <p>Tu inscripción ha sido recibida. Pronto recibirás un correo con los detalles del curso.</p>
+    <button class="btn" id="reset-btn">Volver al formulario</button>
+  </div>
+  
+  <script>
+    // Crear partículas para el fondo
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Tamaño aleatorio
+        const size = Math.random() * 15 + 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Posición aleatoria
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        
+        // Velocidad aleatoria
+        const duration = Math.random() * 20 + 10;
+        particle.style.animationDuration = `${duration}s`;
+        
+        // Retraso aleatorio
+        const delay = Math.random() * 10;
+        particle.style.animationDelay = `${delay}s`;
+        
+        // Opacidad aleatoria
+        const opacity = Math.random() * 0.5 + 0.1;
+        particle.style.opacity = opacity;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Seleccionar nivel de experiencia
+    function setupOptionGroups() {
+      const optionItems = document.querySelectorAll('.option-item');
+      
+      optionItems.forEach(item => {
+        item.addEventListener('click', () => {
+          // Eliminar clase activa de todos los items
+          optionItems.forEach(i => i.classList.remove('active'));
+          // Agregar clase activa al item seleccionado
+          item.classList.add('active');
+        });
+      });
+    }
+    
+    // Manejar el envío del formulario
+    function handleFormSubmission() {
+      const form = document.getElementById('registration-form');
+      const formCard = document.getElementById('form-card');
+      const successCard = document.getElementById('success-card');
+      
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Simulación de envío (aquí irían las validaciones y el envío al servidor)
+        setTimeout(() => {
+          formCard.style.display = 'none';
+          successCard.style.display = 'block';
+        }, 1000);
+      });
+      
+      // Resetear el formulario
+      const resetBtn = document.getElementById('reset-btn');
+      resetBtn.addEventListener('click', () => {
+        form.reset();
+        document.querySelectorAll('.option-item').forEach(i => i.classList.remove('active'));
+        successCard.style.display = 'none';
+        formCard.style.display = 'block';
+      });
+    }
+    
+    // Inicializar funciones cuando el DOM esté cargado
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      setupOptionGroups();
+      handleFormSubmission();
+      
+      // Efecto de focus en los inputs
+      const inputs = document.querySelectorAll('.form-control');
+      inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+          input.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', () => {
+          if (!input.value) {
+            input.parentElement.classList.remove('focused');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
